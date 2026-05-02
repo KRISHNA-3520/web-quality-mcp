@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Website Audit Report</title>
+
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  margin: 0;
+  background: #f5f7fb;
+  color: #111827;
+}
+
+/* HEADER (GLASS STYLE) */
+
+header {
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.header-card {
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.12);
+  padding: 22px;
+  border-radius: 16px;
+  display: inline-block;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* URL ROW */
+.url-row {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  background: rgba(0,0,0,0.3);
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.copy-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+.copy-btn:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+.time-pill {
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px;
+}
+
+/* CIRCLES */
+.cards {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.circle-wrapper {
+  text-align: center;
+}
+
+.circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.circle:hover {
+  transform: scale(1.05);
+}
+
+.circle-inner {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.label {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #374151;
+}
+
+/* ACCORDION */
+.accordion {
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+/* shine layer */
+
+.accordion::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.25),
+    transparent
+  );
+  transform: skewX(-25deg);
+}
+
+/* hover trigger */
+.accordion:hover::before {
+  animation: shine 0.8s ease;
+}
+
+/* animation */
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 150%; }
+}
+
+/* HEADER */
+.accordion-header {
+  padding: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  background: #eef2ff;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.25s ease;
+}
+
+.accordion-header:hover {
+  background: #e0e7ff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.10);
+}
+
+/* CLICK PRESS EFFECT */
+
+.accordion-header:active {
+  transform: scale(0.98);
+}
+
+.accordion.active .accordion-header {
+  background: #dbeafe;
+  box-shadow: 0 4px 12px rgba(59,130,246,0.25);
+}
+
+/* CONTENT */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: 
+    max-height 0.35s ease,
+    padding 0.25s ease;
+}
+
+.accordion.active .accordion-content {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* SCROLL */
+.accordion-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.accordion-content::-webkit-scrollbar-thumb {
+  background: #6366f1;
+  border-radius: 10px;
+}
+
+/* CONTENT FORMAT */
+.content-box {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.section-title {
+  margin-top: 10px;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #93c5fd;
+}
+
+.section-title.fix {
+  color: #34d399;
+}
+
+.tag.red { color: #ef4444; }
+.tag.orange { color: #f97316; }
+.tag.yellow { color: #facc15; }
+.tag.green { color: #22c55e; }
+
+.fix-item {
+  background: rgba(52, 211, 153, 0.1);
+  border-left: 3px solid #34d399;
+  padding: 6px 8px;
+  margin: 6px 0;
+  border-radius: 6px;
+}
+
+/* TOAST */
+
+#copy-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #111827;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: 0.25s;
+}
+
+#copy-toast.show {
+  opacity: 1;
+}
+
+/* FOOTER */
+
+.footer {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* CHEVRON */
+.chevron {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+/* ROTATE ON OPEN */
+
+.accordion.active .chevron {
+  transform: rotate(180deg);
+}
+
+.accordion + .accordion {
+  margin-top: 10px;
+}
+
+/* FADE-IN ANIMATION */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.accordion.active .content-box {
+  animation: fadeSlide 0.35s ease;
+}
+
+.highlight {
+  color: #60a5fa;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-card">
+    <h1>🌐 Website Audit Report</h1>
+
+    <div class="url-row">
+      <span class="badge">
+        🔒 HTTPS
+      </span>
+
+      <span>https://www.google.com/</span>
+      <button onclick="copyUrl()" class="copy-btn">📋</button>
+    </div>
+
+    <div class="time-pill">
+      5/2/2026, 4:11:45 PM
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<div class="cards">
+  
+<div class="circle-wrapper">
+
+    <div class="circle" data-value="61" data-color="#f59e0b">
+
+      <div class="circle-inner">0</div>
+
+    </div>
+
+    <div class="label">⚡ Performance</div>
+
+  </div>
+  
+  
+<div class="circle-wrapper">
+
+    <div class="circle" data-value="5" data-color="#ef4444">
+
+      <div class="circle-inner">0</div>
+
+    </div>
+
+    <div class="label">♿ Accessibility</div>
+
+  </div>
+  
+  
+<div class="circle-wrapper">
+
+    <div class="circle" data-value="0" data-color="#ef4444">
+
+      <div class="circle-inner">0</div>
+
+    </div>
+
+    <div class="label">🔗 Links</div>
+
+  </div>
+  
+  
+<div class="circle-wrapper">
+
+    <div class="circle" data-value="25" data-color="#ef4444">
+
+      <div class="circle-inner">0</div>
+
+    </div>
+
+    <div class="label">🔍 SEO</div>
+
+  </div>
+  
+</div>
+
+
+    <div class="accordion">
+      <div class="accordion-header">
+        <span>⚡ Performance</span>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="accordion-content">
+        <div class="content-box">
+          <div class="line">🚀 Performance Report</div><div class="line">🌐 URL: https://www.google.com/</div><div class="line">Score: <span class="highlight">61</span>/<span class="highlight">100</span></div><div class="line">Rating: 🟡 Needs Improvement</div><div class="line">📊 Key Metrics:</div><div class="line">- LCP (Largest Contentful Paint): <span class="highlight">7.5</span> s</div><div class="line">- FCP (First Contentful Paint): <span class="highlight">4.3</span> s</div><div class="line">- CLS (Cumulative Layout Shift): <span class="highlight">0.002</span></div><div class="line">- TBT (Total Blocking Time): <span class="highlight">110</span> ms</div><div class="line">- Speed Index: <span class="highlight">6.1</span> s</div><div class="line">📈 Score Range:</div><div class="line">🟢 Good: <span class="highlight">90</span>-<span class="highlight">100</span></div><div class="line">🟡 Needs Improvement: <span class="highlight">50</span>-<span class="highlight">89</span></div><div class="line">🔴 Poor: <span class="highlight">0</span>-<span class="highlight">49</span></div><div class="section-title">📊 Summary</div><div class="line">Moderate performance. Optimization recommended.</div>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="accordion">
+      <div class="accordion-header">
+        <span>♿ Accessibility</span>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="accordion-content">
+        <div class="content-box">
+          <div class="section-title">🚨 Issues</div><div class="section-title">📊 Summary</div><div class="line">🔴 <span class="tag red">🔴 Critical:</span> <span class="highlight">0</span></div><div class="line">🟠 <span class="tag orange">🟠 Serious:</span> <span class="highlight">1</span></div><div class="line">🟡 <span class="tag yellow">🟡 Moderate:</span> <span class="highlight">3</span></div><div class="line">🟢 <span class="tag green">🟢 Minor:</span> <span class="highlight">1</span></div><div class="section-title">🚨 Issues</div><div class="line"><span class="highlight">1</span>. [MINOR] Ensure role attribute has an appropriate value for the element</div><div class="line">Rule: aria-allowed-role</div><div class="section-title fix">🛠 Fix Recommendations</div><div class="line">Affected elements: <span class="highlight">1</span></div><div class="line">Example element: #APjFqb</div><div class="line"><span class="highlight">2</span>. [MODERATE] Ensure the document has a main landmark</div><div class="line">Rule: landmark-one-main</div><div class="section-title fix">🛠 Fix Recommendations</div><div class="line">Affected elements: <span class="highlight">1</span></div><div class="line">Example element: html</div><div class="line"><span class="highlight">3</span>. [SERIOUS] Ensure links are distinguished from surrounding text in a way that does not rely on color</div><div class="line">Rule: link-in-text-block</div><div class="section-title fix">🛠 Fix Recommendations</div><div class="line">Affected elements: <span class="highlight">9</span></div><div class="line">Example element: #SIvCob > a:nth-child(<span class="highlight">1</span>)</div><div class="line"><span class="highlight">4</span>. [MODERATE] Ensure that the page, or at least one of its frames contains a level-one heading</div><div class="line">Rule: page-has-heading-one</div><div class="section-title fix">🛠 Fix Recommendations</div><div class="line">Affected elements: <span class="highlight">1</span></div><div class="line">Example element: html</div><div class="line"><span class="highlight">5</span>. [MODERATE] Ensure all page content is contained by landmarks</div><div class="line">Rule: region</div><div class="section-title fix">🛠 Fix Recommendations</div><div class="line">Affected elements: <span class="highlight">1</span></div><div class="line">Example element: #SIvCob</div>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="accordion">
+      <div class="accordion-header">
+        <span>🔗 Links</span>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="accordion-content">
+        <div class="content-box">
+          <div class="section-title">📊 Summary</div><div class="line">Total Checked: <span class="highlight">25</span></div><div class="line">Broken: <span class="highlight">0</span></div><div class="line">Suspicious: <span class="highlight">1</span></div><div class="line">⚠️ Suspicious Links (<span class="highlight">1</span>):</div><div class="line">https://support.google.com/websearch/?p=ws_results_help&hl=en-IN&fg=<span class="highlight">1</span> → Verified via browser (likely valid)</div>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="accordion">
+      <div class="accordion-header">
+        <span>🔍 SEO</span>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="accordion-content">
+        <div class="content-box">
+          <div class="line">🔍 SEO Report</div><div class="line">Score: <span class="highlight">25</span>/<span class="highlight">100</span></div><div class="line">Rating: 🔴 Poor</div><div class="section-title">📊 Summary</div><div class="line">Title: ✅ Present</div><div class="line">Meta Description: ❌ Missing</div><div class="line">H<span class="highlight">1</span> Tags: <span class="highlight">0</span></div><div class="line">Images Missing ALT: <span class="highlight">9</span></div><div class="section-title">🚨 Issues</div><div class="line">Missing meta description</div><div class="line">No H<span class="highlight">1</span> tag found</div><div class="line"><span class="highlight">9</span> images missing ALT</div><div class="section-title fix">🛠 Fix Recommendations</div><div class="fix-item">Add <meta name="description" content="..."></div><div class="fix-item">Add a primary <h<span class="highlight">1</span>> heading for SEO structure</div><div class="fix-item">Add alt attributes to all <img> tags</div>
+        </div>
+      </div>
+    </div>
+  
+
+    <div class="accordion">
+      <div class="accordion-header">
+        <span>🖼️ Visual</span>
+        <span class="chevron">⌄</span>
+      </div>
+      <div class="accordion-content">
+        <div class="content-box">
+          <div class="line">🖼️ Visual Regression Report</div><div class="line">Status: 🟢 No Visual Changes</div><div class="line">Difference: <span class="highlight">0.00%</span></div><div class="line">📊 Analysis:</div><div class="line">- No UI differences detected</div><div class="line">- Layout and rendering are stable</div><div class="line">📁 Images:</div><div class="line">Baseline: screenshots/baseline_https___www_google_com_.png</div><div class="line">Current: screenshots/current_https___www_google_com_.png</div><div class="line">Diff: screenshots/diff_https___www_google_com_.png</div>
+        </div>
+      </div>
+    </div>
+  
+
+<div class="footer">🚀 Generated by Web Quality MCP</div>
+
+</div>
+
+<div id="copy-toast">Copied ✓</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ACCORDION
+document.querySelectorAll(".accordion-header").forEach(header => {
+  header.addEventListener("click", () => {
+    const acc = header.parentElement;
+    const isActive = acc.classList.contains("active");
+
+    // close all
+    document.querySelectorAll(".accordion").forEach(a => {
+      a.classList.remove("active");
+    });
+
+    // open clicked
+    if (!isActive) {
+      acc.classList.add("active");
+    }
+  });
+});
+
+  // CIRCLE ANIMATION
+  document.querySelectorAll(".circle").forEach(circle => {
+    const value = parseInt(circle.dataset.value || "0");
+    const color = circle.dataset.color;
+    const inner = circle.querySelector(".circle-inner");
+
+    let current = 0;
+
+    const animate = () => {
+      current++;
+      const deg = (current / 100) * 360;
+
+      circle.style.background =
+        "conic-gradient(" + color + " " + deg + "deg, #e5e7eb 0deg)";
+
+      inner.textContent = current;
+
+      if (current < value) requestAnimationFrame(animate);
+      else inner.textContent = value;
+    };
+
+    animate();
+  });
+
+});
+
+function copyUrl() {
+  navigator.clipboard.writeText("https://www.google.com/");
+
+  const toast = document.getElementById("copy-toast");
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 900);
+}
+
+// Auto shine once on load
+document.addEventListener("DOMContentLoaded", () => {
+  const accs = document.querySelectorAll(".accordion");
+
+  accs.forEach((acc, i) => {
+    setTimeout(() => {
+      acc.classList.add("shine-run");
+
+      setTimeout(() => {
+        acc.classList.remove("shine-run");
+      }, 800);
+    }, i * 150);
+  });
+});
+</script>
+
+</body>
+</html>
