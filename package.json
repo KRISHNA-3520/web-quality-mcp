@@ -11,9 +11,16 @@
     "start": "node dist/server.js",
     "dev:mcp": "node --loader ts-node/esm src/server.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "mcp",
+    "website-audit",
+    "playwright",
+    "seo",
+    "performance",
+    "automation"
+  ],
+  "author": "KrishnaJamadar",
+  "license": "KJ-1.0",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@playwright/test": "^1.59.1",
@@ -28,5 +35,7 @@
     "@types/axe-core": "^3.0.6",
     "@types/node": "^25.6.0",
     "@types/pngjs": "^6.0.5"
-  }
+  },
+  "types": "./dist/server.d.ts",
+  "description": "A comprehensive website quality analysis tool built as a Model Context Protocol (MCP) server. Analyzes performance, accessibility, SEO, link integrity, and visual consistency of websites with AI-powered recommendations."
 }

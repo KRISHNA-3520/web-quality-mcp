@@ -279,6 +279,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - [ ] PDF report export
 - [ ] Compare multiple websites
 
+
+
 ## 📧 Support
 
 For issues and questions, please open an issue on GitHub.
