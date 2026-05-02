@@ -36,6 +36,11 @@
     "@types/node": "^25.6.0",
     "@types/pngjs": "^6.0.5"
   },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "types": "./dist/server.d.ts",
   "description": "A comprehensive website quality analysis tool built as a Model Context Protocol (MCP) server. Analyzes performance, accessibility, SEO, link integrity, and visual consistency of websites with AI-powered recommendations."
 }
